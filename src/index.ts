@@ -8,7 +8,9 @@ if (!process.env.CHAT_ID) throw new Error("CHAT_ID is not set");
 if (!process.env.CHANNEL_ID) throw new Error("CHANNEL_ID is not set");
 if (!process.env.POST_ID) throw new Error("POST_ID is not set");
 
-const bot = new Bot(process.env.BOT_TOKEN);
+export const bot = new Bot(process.env.BOT_TOKEN, {
+  botInfo: process.env.BOT_INFO ? JSON.parse(process.env.BOT_INFO) : undefined,
+});
 
 // filters
 const inGroup = bot
@@ -109,5 +111,3 @@ bot
     }
     await c.answerCallbackQuery();
   });
-
-bot.start();

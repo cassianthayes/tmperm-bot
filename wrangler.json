@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tmperm-bot",
+  "main": "deploy.ts",
+  "compatibility_date": "2026-03-28",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_compat_populate_process_env"
+  ],
+  "observability": { "enabled": true, "logs": { "enabled": true } }
+}
