@@ -15,16 +15,21 @@ export const insertOrUpdate = async (
 };
 
 export const listOrders = async (
-  status: (typeof ordersTable.$inferSelect)["status"],
+  status?: (typeof ordersTable.$inferSelect)["status"],
 ) => {
-  if (status === "completed")
+  if (status) {
+    if (status === "completed")
+      return await db.query.ordersTable.findMany({
+        where: eq(ordersTable.status, status),
+        orderBy: desc(ordersTable.updatedAt),
+        limit: 10,
+      });
     return await db.query.ordersTable.findMany({
       where: eq(ordersTable.status, status),
-      orderBy: desc(ordersTable.updatedAt),
-      limit: 10,
+      orderBy: asc(ordersTable.createdAt),
     });
+  }
   return await db.query.ordersTable.findMany({
-    where: eq(ordersTable.status, status),
     orderBy: asc(ordersTable.createdAt),
   });
 };

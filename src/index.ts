@@ -71,8 +71,10 @@ for (const status of statuses) {
 }
 
 // post
-const generateKeyboard = (status: (typeof statuses)[number]) => {
+const generateKeyboard = (status?: (typeof statuses)[number]) => {
   const kb = new InlineKeyboard();
+  kb.text("Все", "all");
+  if (!status) kb.primary();
   for (const s of statuses) {
     kb.text(emojis[s], s);
     if (s == status) kb.primary();
@@ -111,3 +113,18 @@ bot
     }
     await c.answerCallbackQuery();
   });
+
+bot.chatType("channel").callbackQuery("all", async (c) => {
+  try {
+    const orders = await listOrders();
+    await bot.api.editMessageText(
+      parseInt(`-100${process.env.CHANNEL_ID}`),
+      parseInt(process.env.POST_ID!),
+      `<b>Все заказ-наряды</b>\n${orders.length ? orders.map((o, i) => `${i + 1}. <i>${o.createdAt.toLocaleDateString("ru", { day: "2-digit", month: "short" })}</i> <a href="t.me/c/${process.env.CHANNEL_ID}/${o.post}?comment=${o.id}">${o.caption}</a>`).join("\n") : "Пока что нет заказ-нарядов."}`,
+      { reply_markup: generateKeyboard(), parse_mode: "HTML" },
+    );
+  } catch (e) {
+    console.log(e);
+  }
+  await c.answerCallbackQuery();
+});
