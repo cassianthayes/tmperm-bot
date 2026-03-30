@@ -117,6 +117,8 @@ bot
 bot.chatType("channel").callbackQuery("all", async (c) => {
   try {
     const orders = await listOrders();
+    if (orders.length > 30)
+      return await c.answerCallbackQuery("Заказ-нарядов слишком много.");
     await bot.api.editMessageText(
       parseInt(`-100${process.env.CHANNEL_ID}`),
       parseInt(process.env.POST_ID!),

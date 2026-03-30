@@ -1,6 +1,6 @@
 import { ordersTable } from "./schema";
 import { db } from ".";
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq, ne } from "drizzle-orm";
 
 export const insertOrUpdate = async (
   order: Omit<typeof ordersTable.$inferInsert, "updatedAt">,
@@ -30,6 +30,7 @@ export const listOrders = async (
     });
   }
   return await db.query.ordersTable.findMany({
+    where: ne(ordersTable.status, "completed"),
     orderBy: asc(ordersTable.createdAt),
   });
 };
