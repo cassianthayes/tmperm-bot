@@ -70,6 +70,15 @@ for (const status of statuses) {
   });
 }
 
+// commands
+bot.chatType("private").command("commands", async (c) => {
+  await bot.api.setMyCommands([
+    { command: "n", description: "Новый" },
+    { command: "r", description: "В работе" },
+    { command: "g", description: "Готов" },
+    { command: "v", description: "Выдан" },
+  ]);
+});
 // post
 const generateKeyboard = (status?: (typeof statuses)[number]) => {
   const kb = new InlineKeyboard();

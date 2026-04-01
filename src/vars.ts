@@ -5,12 +5,13 @@ export const statuses = [
   "completed",
 ] as const;
 
-export const triggers: Record<(typeof statuses)[number], string[]> = {
-  created: ["/n", "Новый", "новый"],
-  processing: ["/r", "В работе", "в работе"],
-  ready: ["/g", "Готов", "Готов"],
-  completed: ["/v", "Выдан", "выдан"],
-};
+export const triggers: Record<(typeof statuses)[number], (string | RegExp)[]> =
+  {
+    created: ["/n", "Новый", "новый", /Новый.*/, /новый.*/],
+    processing: ["/r", "В работе", "в работе", /В работе.*/, /в работе.*/],
+    ready: ["/g", "Готов", "Готов", /Готов.*/, /готов.*/],
+    completed: ["/v", "Выдан", "выдан", /Выдан.*/, /выдан.*/],
+  };
 
 export const plurals: Record<(typeof statuses)[number], string> = {
   created: "Новые",
